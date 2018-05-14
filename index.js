@@ -1,12 +1,15 @@
 const express = require('express');
 const { spawn } = require('child_process');
+const path = require('path');
 const app = express();
 const PORT = 5000;
-
 
 app.post('/update', async (req, res) => {
 
     try {
+        const getIntoDir = await spawn('cd', ['/home/pjlangsam/Redwood']);
+        getIntoDir.stdout.on('data', (data) => console.log(`${data}`));
+
         const update = await spawn('sudo', ['git', 'pull', '--rebase']);
         update.stdout.on('data', (data) => console.log(`${data}`))
         update.stderr.on("data", data => console.log(`${data}`));
